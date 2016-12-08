@@ -35,7 +35,7 @@ def clean(dl, target):
         else:
             if os.path.splitext(dl + filename)[-1].lower() in file_extensions:
                 if filename[0].isalpha():
-                    shutil.move(dl + '/' + filename, ef)
+                    shutil.move(dl + '/' + filename, ef)    # MOVES EVERY MOVIE / EPISODE INTO THE EPISODE FOLDER!!!!
                     movie_list.append(guessit.guessit(filename))
 
     # Priting info for each movie
