@@ -20,7 +20,7 @@ def clean(dl, target):
     file_extensions = ['.avi', '.mp4', '.mkv']
 
     # Dictionary of movies and folders
-    movies_dict = D(list)
+
     folder_dict = D(list)
 
     movie_list = []
