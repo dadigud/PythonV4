@@ -29,8 +29,8 @@ def sort_files(root_path):
     now = time.localtime()
     MoveFolder1(root_path)
 
-    file_extensions = ['.avi', '.mp4', '.mkv', '.m4v']  # Allowed video file extensions
-    banned_extensions = ['.srt', '.jpg', '.torrent', '.gif']    # Banned file extensions
+    file_extensions = ['.avi', '.mp4', '.mkv', '.m4v', '.mov', '.wmv']  # Allowed video file extensions
+    banned_extensions = ['.srt', '.jpg', '.torrent', '.gif', '.nfo']    # Banned file extensions
 
     ef = root_path + '/' + 'Episodes'   # Path to the Episodes folder
     mf = root_path + '/' + 'Movies'     # Path to the Movies folder
@@ -47,11 +47,8 @@ def sort_files(root_path):
         abs_path = root_path + '/' + filename
         if not os.path.isdir(abs_path):
             if os.path.splitext(abs_path)[-1].lower() in file_extensions:
-                counter = 0
                 movie_info = guessit.guessit(filename)
-                dict_len = len(movie_info)
                 for key, val in movie_info.items():
-                    counter += 1
                     if key == 'title':
                         title = str(val)
                     if key == 'type':
@@ -69,6 +66,10 @@ def sort_files(root_path):
                         else:
                             shutil.move(abs_path, ef + '/' + title.title() + '/' + 'Season ' + season)
 
+                        title = ''
+                        filetype = ''
+                        season = ''
+
                     elif title != '' and filetype == 'movie':
                         if not os.path.exists(mf):
                             os.makedirs(mf)
@@ -78,14 +79,9 @@ def sort_files(root_path):
                         else:
                             shutil.move(abs_path, mf + '/' + title.title())
 
-                    elif dict_len == counter and season == '':
-                        if not os.path.exists(rf):
-                            os.makedirs(rf)
-                        shutil.move(abs_path, rf + '/' + filename)
-
-                    title = ''
-                    filetype = ''
-                    season = ''
+                        title = ''
+                        filetype = ''
+                        season = ''
 
             elif os.path.splitext(abs_path)[-1].lower() in banned_extensions:
                 os.remove(abs_path)
