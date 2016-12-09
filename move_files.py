@@ -5,7 +5,6 @@ import time
 import re
 
 
-
 def move_me(abp, fon, fn):
     if not os.path.exists(fon):
         os.makedirs(fon)
@@ -35,7 +34,7 @@ def sort_files(root_path):
     now = time.localtime()
 
     file_extensions = ['.avi', '.mp4', '.mkv', '.m4v', '.mov', '.wmv']  # Allowed video file extensions
-    banned_extensions = ['.srt', '.jpg', '.torrent', '.gif', '.nfo']    # Banned file extensions
+    banned_extensions = ['.srt', '.jpg', '.torrent', '.gif', '.nfo', '.png', '.sfv']    # Banned file extensions
 
     ef = root_path + '/' + 'Episodes'   # Path to the Episodes folder
     mf = root_path + '/' + 'Movies'     # Path to the Movies folder
@@ -126,10 +125,9 @@ def sort_files(root_path):
                 move_me(abs_path, pf, filename)
             elif os.path.splitext(abs_path)[-1].lower() == '.txt':
                 move_me(abs_path, df, filename)
+    for file in os.listdir(root_path):
+        abs_path = root_path + '/' + file
+        if not os.path.isdir(abs_path):
+            move_me(abs_path, rf, file)
     print(now, time.localtime())
 
-pathAlex = 'C:/Users/alex/Documents/glósur/2.ar/python/verk4/downloads/'
-sort_files(pathAlex)
-
-
-#sort_files('/home/dadi15/Github/downloads')
