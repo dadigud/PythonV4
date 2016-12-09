@@ -129,5 +129,9 @@ def sort_files(root_path):
         abs_path = root_path + '/' + file
         if not os.path.isdir(abs_path):
             move_me(abs_path, rf, file)
+
+
     print(now, time.localtime())
 
+
+sort_files('C:/Users/jonsi/Desktop/downloads')

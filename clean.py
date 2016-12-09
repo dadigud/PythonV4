@@ -1,12 +1,12 @@
-import os
-from collections import defaultdict as D
-import guessit
-import shutil
+import move_files
 
-
+print('Hello')
 # Main
-def clean(arg1, arg2):
-    # FUNC - Get all files from folders/subfolders
-    # move_files.py
+def main(arg1):
+    move_files.sort_files(arg1)
+
+
+    #python3 clean.py /path/to/download/folder /path/to/structured/folder
+
+    #  move_files.py
     # TODO: Find out later..
-    None
