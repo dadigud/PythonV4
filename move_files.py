@@ -4,9 +4,9 @@ import shutil
 
 
 def move_me(abp, path, fon, fn):
-    if not os.path.exists(path + '/' + 'Songs'):
-        os.makedirs(path + '/' + 'Songs')
-    shutil.move(abp, path + '/' + 'Songs' + '/' + fn)
+    if not os.path.exists(path + '/' + fon):
+        os.makedirs(path + '/' + fon)
+    shutil.move(abp, path + '/' + fon + '/' + fn)
 
 
 def sort_files(root_path):
@@ -14,8 +14,6 @@ def sort_files(root_path):
     banned_extensions = ['.srt', '.jpg', '.torrent']
     ef = root_path + '/' + 'Episodes'  # Path to the Episodes folder
     mf = root_path + '/' + 'Movies'    # Path to the Movies folder
-
-    # Make folders if non existent
 
     title = ''
     filetype = ''
