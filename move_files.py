@@ -3,20 +3,25 @@ import guessit
 import shutil
 
 
-def move_me(abp, path, fon, fn):
-    if not os.path.exists(path + '/' + fon):
-        os.makedirs(path + '/' + fon)
-    shutil.move(abp, path + '/' + fon + '/' + fn)
+def move_me(abp, fon, fn):
+    if not os.path.exists(fon):
+        os.makedirs(fon)
+    shutil.move(abp, fon + '/' + fn)
 
 
 def sort_files(root_path):
-    file_extensions = ['.avi', '.mp4', '.mkv', '.m4v']
-    banned_extensions = ['.srt', '.jpg', '.torrent']
-    ef = root_path + '/' + 'Episodes'  # Path to the Episodes folder
-    mf = root_path + '/' + 'Movies'    # Path to the Movies folder
+    file_extensions = ['.avi', '.mp4', '.mkv', '.m4v']  # Allowed video file extensions
+    banned_extensions = ['.srt', '.jpg', '.torrent']    # Banned file extensions
 
-    title = ''
-    filetype = ''
+    ef = root_path + '/' + 'Episodes'   # Path to the Episodes folder
+    mf = root_path + '/' + 'Movies'     # Path to the Movies folder
+    sf = root_path + '/' + 'Songs'      # Path to the Songs folder
+    df = root_path + '/' + 'Documents'  # Path to the Documents folder
+    pf = root_path + '/' + 'Programs'   # Path to the Programs folder
+
+    title = ''                          # Title of the file
+    filetype = ''                       # Filetype
+    season = ''                         # Season of episode
 
     for filename in os.listdir(root_path):
         abs_path = root_path + '/' + filename
@@ -28,17 +33,21 @@ def sort_files(root_path):
                         title = str(y)
                     if x == 'type':
                         filetype = str(y)
-
-                    if title != '' and filetype == 'episode':
+                    if x == 'season':
+                        season = str(y)
+                    if title != '' and season != '' and filetype == 'episode':
                         if not os.path.exists(ef):
                             os.makedirs(ef)
                         if not os.path.exists(ef + '/' + title.title()):
                             os.makedirs(ef + '/' + title.title())
-                            shutil.move(abs_path, ef + '/' + title.title())
+                        if not os.path.exists(ef + '/' + title.title() + '/' + 'Season ' + season):
+                            os.makedirs(ef + '/' + title.title() + '/' + 'Season ' + season)
+                            shutil.move(abs_path, ef + '/' + title.title() + '/' + 'Season ' + season)
                         else:
-                            shutil.move(abs_path, ef + '/' + title.title())
+                            shutil.move(abs_path, ef + '/' + title.title() + '/' + 'Season ' + season)
                         title = ''
                         filetype = ''
+                        season = ''
                     elif title != '' and filetype == 'movie':
                         if not os.path.exists(mf):
                             os.makedirs(mf)
@@ -49,12 +58,14 @@ def sort_files(root_path):
                             shutil.move(abs_path, mf + '/' + title.title())
                         title = ''
                         filetype = ''
+                        season = ''
             elif os.path.splitext(abs_path)[-1].lower() in banned_extensions:
                 os.remove(abs_path)
             elif os.path.splitext(abs_path)[-1].lower() == '.mp3':
-                move_me(abs_path, root_path, 'Songs', filename)
+                move_me(abs_path, sf, filename)
             elif os.path.splitext(abs_path)[-1].lower() == '.exe':
-                move_me(abs_path, root_path, 'Programs', filename)
+                move_me(abs_path, pf, filename)
             elif os.path.splitext(abs_path)[-1].lower() == '.txt':
-                move_me(abs_path, root_path, 'Documents', filename)
+                move_me(abs_path, df, filename)
 
+sort_files('C:/ACCESS/downloads')
