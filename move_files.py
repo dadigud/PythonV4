@@ -10,6 +10,7 @@ def move_me(abp, fon, fn):
 
 
 def sort_files(root_path):
+
     file_extensions = ['.avi', '.mp4', '.mkv', '.m4v']  # Allowed video file extensions
     banned_extensions = ['.srt', '.jpg', '.torrent']    # Banned file extensions
 
@@ -28,13 +29,13 @@ def sort_files(root_path):
         if not os.path.isdir(abs_path):
             if os.path.splitext(abs_path)[-1].lower() in file_extensions:
                 movie_info = guessit.guessit(filename)
-                for x, y in movie_info.items():
-                    if x == 'title':
-                        title = str(y)
-                    if x == 'type':
-                        filetype = str(y)
-                    if x == 'season':
-                        season = str(y)
+                for key, val in movie_info.items():
+                    if key == 'title':
+                        title = str(val)
+                    if key == 'type':
+                        filetype = str(val)
+                    if key == 'season':
+                        season = str(val)
                     if title != '' and season != '' and filetype == 'episode':
                         if not os.path.exists(ef):
                             os.makedirs(ef)
