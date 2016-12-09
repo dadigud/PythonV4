@@ -3,9 +3,15 @@ import guessit
 import shutil
 
 
+def move_me(abp, path, fon, fn):
+    if not os.path.exists(path + '/' + 'Songs'):
+        os.makedirs(path + '/' + 'Songs')
+    shutil.move(abp, path + '/' + 'Songs' + '/' + fn)
+
+
 def sort_files(root_path):
     file_extensions = ['.avi', '.mp4', '.mkv', '.m4v']
-    banned_extensions = ['.srt', '.jpg']
+    banned_extensions = ['.srt', '.jpg', '.torrent']
     ef = root_path + '/' + 'Episodes'  # Path to the Episodes folder
     mf = root_path + '/' + 'Movies'    # Path to the Movies folder
 
@@ -48,9 +54,11 @@ def sort_files(root_path):
             elif os.path.splitext(abs_path)[-1].lower() in banned_extensions:
                 os.remove(abs_path)
             elif os.path.splitext(abs_path)[-1].lower() == '.mp3':
-                if not os.path.exists(root_path + '/' + 'Songs'):
-                    os.makedirs(root_path + '/' + 'Songs')
-                shutil.move(abs_path, root_path + '/' + 'Songs' + '/' + filename)
+                move_me(abs_path, root_path, 'Songs', filename)
+            elif os.path.splitext(abs_path)[-1].lower() == '.exe':
+                move_me(abs_path, root_path, 'Programs', filename)
+            elif os.path.splitext(abs_path)[-1].lower() == '.txt':
+                move_me(abs_path, root_path, 'Documents', filename)
 
 
 sort_files('C:/Users/dadig/Downloads')
