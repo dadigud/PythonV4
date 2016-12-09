@@ -58,5 +58,3 @@ def sort_files(root_path):
             elif os.path.splitext(abs_path)[-1].lower() == '.txt':
                 move_me(abs_path, root_path, 'Documents', filename)
 
-
-sort_files('C:/Users/dadig/Downloads')
