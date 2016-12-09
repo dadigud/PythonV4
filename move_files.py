@@ -11,25 +11,27 @@ def move_me(abp, fon, fn):
     shutil.move(abp, fon + '/' + fn)
 
 
-def MoveFolder1(dir):
+def MoveFolder1(dir, bannedDirs):
     Exists = []
     seen = set()
-    for File in os.listdir(dir):
+    rootDirs = [x for x in os.listdir(dir) if x not in bannedDirs]
+    for File in rootDirs:
             if not os.path.isdir(os.path.join(dir, File)):
                 Exists.append(File)
     for root, dirs, files in os.walk(dir):
-        for file in files:
-            if file not in seen and file not in Exists:
-                seen.add(file)
-                shutil.move(os.path.join(root, file),os.path.join(dir,file))
-    for Dir in os.listdir(dir):
+        if root not in bannedDirs and dirs not in bannedDirs:
+            for file in files:
+                if file not in seen and file not in Exists:
+                    seen.add(file)
+                    shutil.move(os.path.join(root, file),os.path.join(dir,file))
+    for Dir in rootDirs:
+        if Dir not in bannedDirs:
             if os.path.isdir(os.path.join(dir, Dir)):
                 shutil.rmtree(os.path.join(dir, Dir))
 
 
 def sort_files(root_path):
     now = time.localtime()
-    MoveFolder1(root_path)
 
     file_extensions = ['.avi', '.mp4', '.mkv', '.m4v', '.mov', '.wmv']  # Allowed video file extensions
     banned_extensions = ['.srt', '.jpg', '.torrent', '.gif', '.nfo', '.png', '.sfv']    # Banned file extensions
@@ -41,6 +43,9 @@ def sort_files(root_path):
     pf = root_path + '/' + 'Programs'   # Path to the Programs folder
     rf = root_path + '/' + 'Random'     # Path to the Random folder
     zf = root_path + '/' + 'Zipped'     # Path to the Zipped folder
+
+    sortedDirs = [ef, mf, sf, df, pf, rf, zf]
+    MoveFolder1(root_path, sortedDirs)
 
     title = ''                          # Title of the file
     filetype = ''                       # Filetype
@@ -126,5 +131,3 @@ def sort_files(root_path):
             move_me(abs_path, rf, file)
     print(now, time.localtime())
 
-
-sort_files('/home/dadi15/Github/downloads')
