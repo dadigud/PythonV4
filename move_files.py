@@ -2,6 +2,8 @@ import os
 import guessit
 import shutil
 import time
+import re
+
 
 
 def move_me(abp, fon, fn):
@@ -39,6 +41,7 @@ def sort_files(root_path):
     df = root_path + '/' + 'Documents'  # Path to the Documents folder
     pf = root_path + '/' + 'Programs'   # Path to the Programs folder
     rf = root_path + '/' + 'Random'     # Path to the Random folder
+    zf = root_path + '/' + 'Zipped'     # Path to the Zipped folder
 
     title = ''                          # Title of the file
     filetype = ''                       # Filetype
@@ -98,6 +101,17 @@ def sort_files(root_path):
                     title = ''
                     filetype = ''
                     season = ''
+
+            elif re.search(".r\d+|rar|part", filename):
+                mi = guessit.guessit(filename)
+                if not os.path.exists(zf):
+                    os.makedirs(zf)
+                for key, val in mi.items():
+                    if key == 'title':
+                        file_name = str(val)
+                        fpath = zf + '/' + file_name.split()[0]
+                        move_me(abs_path, fpath, filename)
+                        break
 
             elif os.path.splitext(abs_path)[-1].lower() in banned_extensions:
                 os.remove(abs_path)
