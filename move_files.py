@@ -109,4 +109,8 @@ def sort_files(root_path):
                 move_me(abs_path, df, filename)
     print(now, time.localtime())
 
-sort_files('/home/dadi15/Github/downloads')
+pathAlex = 'C:/Users/alex/Documents/glósur/2.ar/python/verk4/downloads/'
+MoveFolder1(pathAlex)
+
+
+#sort_files('/home/dadi15/Github/downloads')
