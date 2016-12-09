@@ -53,3 +53,4 @@ def sort_files(root_path):
                 shutil.move(abs_path, root_path + '/' + 'Songs' + '/' + filename)
 
 
+sort_files('C:/Users/dadig/Downloads')
