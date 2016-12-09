@@ -3,6 +3,7 @@ import guessit
 import shutil
 import time
 
+
 def move_me(abp, fon, fn):
     if not os.path.exists(fon):
         os.makedirs(fon)
@@ -19,7 +20,7 @@ def MoveFolder1(dir):
         for file in files:
             if file not in seen and file not in Exists:
                 seen.add(file)
-                shutil.move(os.path.join(root,file),os.path.join(dir,file))
+                shutil.move(os.path.join(root, file),os.path.join(dir,file))
     for Dir in os.listdir(dir):
             if os.path.isdir(os.path.join(dir, Dir)):
                 shutil.rmtree(os.path.join(dir, Dir))
@@ -42,6 +43,7 @@ def sort_files(root_path):
     title = ''                          # Title of the file
     filetype = ''                       # Filetype
     season = ''                         # Season of episode
+    episode = ''                        # Number of episode
 
     for filename in os.listdir(root_path):
         abs_path = root_path + '/' + filename
@@ -55,33 +57,47 @@ def sort_files(root_path):
                         filetype = str(val)
                     if key == 'season':
                         season = str(val)
-                    if title != '' and season != '' and filetype == 'episode':
-                        if not os.path.exists(ef):
-                            os.makedirs(ef)
-                        if not os.path.exists(ef + '/' + title.title()):
-                            os.makedirs(ef + '/' + title.title())
-                        if not os.path.exists(ef + '/' + title.title() + '/' + 'Season ' + season):
-                            os.makedirs(ef + '/' + title.title() + '/' + 'Season ' + season)
-                            shutil.move(abs_path, ef + '/' + title.title() + '/' + 'Season ' + season)
-                        else:
-                            shutil.move(abs_path, ef + '/' + title.title() + '/' + 'Season ' + season)
+                    if key == 'episode':
+                        episode = str(val)
 
-                        title = ''
-                        filetype = ''
-                        season = ''
+                if title != '' and season != '' and filetype == 'episode':
+                    if not os.path.exists(ef):
+                        os.makedirs(ef)
+                    if not os.path.exists(ef + '/' + title.title()):
+                        os.makedirs(ef + '/' + title.title())
+                    if not os.path.exists(ef + '/' + title.title() + '/' + 'Season ' + season):
+                        os.makedirs(ef + '/' + title.title() + '/' + 'Season ' + season)
+                        shutil.move(abs_path, ef + '/' + title.title() + '/' + 'Season ' + season)
+                    else:
+                        shutil.move(abs_path, ef + '/' + title.title() + '/' + 'Season ' + season)
 
-                    elif title != '' and filetype == 'movie':
-                        if not os.path.exists(mf):
-                            os.makedirs(mf)
-                        if not os.path.exists(mf + '/' + title.title()):
-                            os.makedirs(mf + '/' + title.title())
-                            shutil.move(abs_path, mf + '/' + title.title())
-                        else:
-                            shutil.move(abs_path, mf + '/' + title.title())
+                    title = ''
+                    filetype = ''
+                    season = ''
 
-                        title = ''
-                        filetype = ''
-                        season = ''
+                elif title != '' and season == '' and episode != '' and filetype == 'episode':
+                    if not os.path.exists(ef):
+                        os.makedirs(ef)
+                    if not os.path.exists(ef + '/' + title.title()):
+                        os.makedirs(ef + '/' + title.title())
+                    shutil.move(abs_path, ef + '/' + title.title())
+
+                    title = ''
+                    filetype = ''
+                    season = ''
+
+                elif title != '' and filetype == 'movie':
+                    if not os.path.exists(mf):
+                        os.makedirs(mf)
+                    if not os.path.exists(mf + '/' + title.title()):
+                        os.makedirs(mf + '/' + title.title())
+                        shutil.move(abs_path, mf + '/' + title.title())
+                    else:
+                        shutil.move(abs_path, mf + '/' + title.title())
+
+                    title = ''
+                    filetype = ''
+                    season = ''
 
             elif os.path.splitext(abs_path)[-1].lower() in banned_extensions:
                 os.remove(abs_path)
@@ -93,4 +109,4 @@ def sort_files(root_path):
                 move_me(abs_path, df, filename)
     print(now, time.localtime())
 
-sort_files('C:/ACCESS/downloads')
+sort_files('/home/dadi15/Github/downloads')
