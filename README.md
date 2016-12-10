@@ -16,3 +16,4 @@ Command | Action
 `1` | Sorts the folder
 `2` | Add allowed movie file extension
 `3` | Add file extension to remove from folder
+
