@@ -26,7 +26,7 @@ def user_input():
         if var == '3':
             fe = input('-->')
             if fe not in my_list[1]:
-                my_list[1].append(fe + ' ')
+                my_list[1].append(' ' + fe)
                 break
     file = open('db.txt', 'w')
     file.seek(0)
