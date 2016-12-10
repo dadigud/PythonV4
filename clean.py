@@ -39,11 +39,17 @@ def move_from_folders(root_dir, banned_dirs):
 
 def main():
     root_path = sys.argv[1]     # Source path
+    if not os.path.exists(root_path):
+        sys.exit('Source path does not exist...')
+
     targ_path = sys.argv[2]     # Destination path
+    if not os.path.exists(targ_path):
+        os.makedirs(targ_path)
+
     if uinput.user_input() == 1:
         db = uinput.get_from_db()
-        file_extensions = db[0]             # Allowed video file extensions
-        banned_extensions = db[1]           # Banned file extensions
+        file_extensions = ' '.join(db[0]).split()               # Allowed video file extensions
+        banned_extensions = ' '.join(db[1]).split()             # Banned file extensions
         music_extensions = ['.mp3', '.flac', '.m4a', '.wav']    # Defined music extensions
 
         ef = targ_path + '/' + 'Episodes'   # Path to the Episodes folder
