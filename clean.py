@@ -7,39 +7,44 @@ import uinput
 from pathlib_revised import Path2
 
 
+# Moves file from A to B. If the folder
+# does not exist, we create it
 def move_me(abp, fon, fn):
     if not os.path.exists(fon):
         os.makedirs(fon)
     shutil.move(abp, fon + '/' + fn)
 
 
-def MoveFolder1(dir, bannedDirs):
-    Exists = []
+# Moves everything from all sub-dirs into root
+def move_from_folders(root_dir, banned_dirs):
+    exists = []
     seen = set()
-    rootDirs = [x for x in os.listdir(dir) if x not in bannedDirs]
-    for File in rootDirs:
-        if not os.path.isdir(os.path.join(dir, File)):
-            Exists.append(File)
-    for root, dirs, files in os.walk(dir):
-        if root not in bannedDirs and dirs not in bannedDirs:
+    root_dirs = [x for x in os.listdir(root_dir) if x not in banned_dirs]
+    for File in root_dirs:
+        if not os.path.isdir(os.path.join(root_dir, File)):
+            exists.append(File)
+    for root, dirs, files in os.walk(root_dir):
+        if root not in banned_dirs and dirs not in banned_dirs:
             for file in files:
-                if file not in seen and file not in Exists:
+                if file not in seen and file not in exists:
                     seen.add(file)
                     x = Path2(os.path.join(root, file))
-                    y = Path2(os.path.join(dir, file))
+                    y = Path2(os.path.join(root_dir, file))
                     shutil.move(x.extended_path, y.extended_path)
-    for Dir in rootDirs:
-        if Dir not in bannedDirs:
-            if os.path.isdir(os.path.join(dir, Dir)):
-                shutil.rmtree(os.path.join(dir, Dir))
+    for Dir in root_dirs:
+        if Dir not in banned_dirs:
+            if os.path.isdir(os.path.join(root_dir, Dir)):
+                shutil.rmtree(os.path.join(root_dir, Dir))
 
 
 def main():
-    root_path = sys.argv[1]
-    targ_path = sys.argv[2]
+    root_path = sys.argv[1]     # Source path
+    targ_path = sys.argv[2]     # Destination path
     if uinput.user_input() == 1:
-        file_extensions = ['.avi', '.mp4', '.mkv', '.m4v', '.mov', '.wmv']  # Allowed video file extensions
-        banned_extensions = ['.srt', '.jpg', '.torrent', '.gif', '.nfo', '.png', '.sfv']    # Banned file extensions
+        db = uinput.get_from_db()
+        file_extensions = list(db)[0]             # Allowed video file extensions
+        banned_extensions = list(db)[1]           # Banned file extensions
+        music_extensions = ['.mp3', '.flac', '.m4a', '.wav']    # Defined music extensions
 
         ef = targ_path + '/' + 'Episodes'   # Path to the Episodes folder
         mf = targ_path + '/' + 'Movies'     # Path to the Movies folder
@@ -49,8 +54,8 @@ def main():
         rf = targ_path + '/' + 'Random'     # Path to the Random folder
         zf = targ_path + '/' + 'Zipped'     # Path to the Zipped folder
 
-        sortedDirs = [ef, mf, sf, df, pf, rf, zf]
-        MoveFolder1(root_path, sortedDirs)
+        sorted_dirs = [ef, mf, sf, df, pf, rf, zf]
+        move_from_folders(root_path, sorted_dirs)
 
         title = ''                          # Title of the file
         filetype = ''                       # Filetype
@@ -62,6 +67,8 @@ def main():
             if not os.path.isdir(abs_path):
                 if os.path.splitext(abs_path)[-1].lower() in file_extensions:
                     movie_info = guessit.guessit(filename)
+
+                    # Collect file information
                     for key, val in movie_info.items():
                         if key == 'title':
                             title = str(val)
@@ -72,6 +79,8 @@ def main():
                         if key == 'episode':
                             episode = str(val)
 
+                    # If we find an episode with a title and season number
+                    # it is added to the correct folder according to season number
                     if title != '' and season != '' and filetype == 'episode':
                         if not os.path.exists(ef):
                             os.makedirs(ef)
@@ -79,14 +88,12 @@ def main():
                             os.makedirs(ef + '/' + title.title())
                         if not os.path.exists(ef + '/' + title.title() + '/' + 'Season ' + season):
                             os.makedirs(ef + '/' + title.title() + '/' + 'Season ' + season)
-                            shutil.move(abs_path, ef + '/' + title.title() + '/' + 'Season ' + season)
-                        else:
-                            shutil.move(abs_path, ef + '/' + title.title() + '/' + 'Season ' + season)
+                        shutil.move(abs_path, ef + '/' + title.title() + '/' + 'Season ' + season)
 
-                        title = ''
-                        filetype = ''
-                        season = ''
+                        title, filename, season = '', '', ''
 
+                    # If we find an episode with a title, an episode number but not a season
+                    # number, it is added to the root folder of the correct Tv show
                     elif title != '' and season == '' and episode != '' and filetype == 'episode':
                         if not os.path.exists(ef):
                             os.makedirs(ef)
@@ -94,10 +101,10 @@ def main():
                             os.makedirs(ef + '/' + title.title())
                         shutil.move(abs_path, ef + '/' + title.title())
 
-                        title = ''
-                        filetype = ''
-                        season = ''
+                        title, filename, season = '', '', ''
 
+                    # If the file type has a title and is a movie
+                    # it is added to theMovies folder
                     elif title != '' and filetype == 'movie':
                         if not os.path.exists(mf):
                             os.makedirs(mf)
@@ -107,10 +114,10 @@ def main():
                         else:
                             shutil.move(abs_path, mf + '/' + title.title())
 
-                        title = ''
-                        filetype = ''
-                        season = ''
+                        title, filename, season = '', '', ''
 
+                # Here we sort out any zipped files. They are added to
+                # the Zipped folder and grouped into their own folder
                 elif re.search(".r\d+|rar|part", filename):
                     mi = guessit.guessit(filename)
                     if not os.path.exists(zf):
@@ -122,9 +129,12 @@ def main():
                             move_me(abs_path, fpath, filename)
                             break
 
+                # In this block of code, we sort out all other file extensions
+                # that need to be taken care of. They are either removed or
+                # Moved into their own folder
                 elif os.path.splitext(abs_path)[-1].lower() in banned_extensions:
                     os.remove(abs_path)
-                elif os.path.splitext(abs_path)[-1].lower() == '.mp3':
+                elif os.path.splitext(abs_path)[-1].lower() in music_extensions:
                     move_me(abs_path, sf, filename)
                 elif os.path.splitext(abs_path)[-1].lower() == '.exe':
                     move_me(abs_path, pf, filename)

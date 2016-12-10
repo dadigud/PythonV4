@@ -1,12 +1,16 @@
-def user_input():
-    my_list = []
-
+def get_from_db():
+    lis = []
     file = open('db.txt', 'r')
     for i in file.readlines():
-        my_list.append(list(i.split()))
+        lis.append(list(i.split()))
     file.close()
+    return lis
 
+
+def user_input():
+    my_list = get_from_db()
     var = ''
+
     file = open('db.txt', 'w')
     file.seek(0)
     file.truncate()
@@ -17,7 +21,11 @@ def user_input():
         if var not in ['1', '2', '3']:
             print('Wrong input')
         if var == '1':
-            print('\n Sorting...')
+            print('\nSorting...')
+            file = open('db.txt', 'w')
+            for i in my_list:
+                file.write(''.join(i) + '\n')
+            file.close()
             return 1
         if var == '2':
             fe = input('-->')
