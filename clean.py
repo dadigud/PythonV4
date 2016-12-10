@@ -42,8 +42,8 @@ def main():
     targ_path = sys.argv[2]     # Destination path
     if uinput.user_input() == 1:
         db = uinput.get_from_db()
-        file_extensions = list(db)[0]             # Allowed video file extensions
-        banned_extensions = list(db)[1]           # Banned file extensions
+        file_extensions = db[0]             # Allowed video file extensions
+        banned_extensions = db[1]           # Banned file extensions
         music_extensions = ['.mp3', '.flac', '.m4a', '.wav']    # Defined music extensions
 
         ef = targ_path + '/' + 'Episodes'   # Path to the Episodes folder
