@@ -1,19 +1,37 @@
-# PythonV4
-To run the program, run the following command
-```bash
-py clean.py /source /destination
-```
-# Modules
+# Download clean-Up
+
+This script is designed to categories a downlaod folder by moving the files to their appropriate directory. 
+
+## Authors
+* Alex Kári Ívarsson, alexi15@ru.is
+* Daði Guðvarsson, dadi15@ru.is
+* Jón Heiðar Sigmundsson, jonhei15@ru.is
+
+## Modules
+The following modules are needed to run the script:
+* guessit
+* pathlib_revised
+
 To install the required modules, run the following commands
-```bash
+```bash 
+For windows
 py -m pip install pathlib_revised
 py -m pip install guessit
 ```
 
-## List of client commands
-Command | Action
---- | --- | ---
-`1` | Sorts the folder
-`2` | Add or remove allowed movie file extension
-`3` | Add or remove file extension to be removed from folder
+## Running the script
+```bash
+clean.py [-h] [-s] [-allowed, -a] [-banned, -b] root destination
+```
+```bash
+positional arguments:
+  root          Folder to be sorted
+  destination   Destination folder of sort
+
+optional arguments:
+  -h, --help    show this help message and exit
+  -s            Sort and move files in root to destination
+  -allowed, -a  Add or remove allowed movie file extensions
+  -banned, -b   Add or remove banned movie file extensions
+```
 
