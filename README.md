@@ -14,6 +14,6 @@ py -m pip install guessit
 Command | Action
 --- | --- | ---
 `1` | Sorts the folder
-`2` | Add allowed movie file extension
-`3` | Add file extension to remove from folder
+`2` | Add or remove allowed movie file extension
+`3` | Add or remove file extension to be removed from folder
 
