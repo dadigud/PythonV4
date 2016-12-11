@@ -15,11 +15,16 @@ def move_me(abp, fon, fn):
     shutil.move(abp, fon + '/' + fn)
 
 
+def sp(abs_path):
+    return os.path.splitext(abs_path)[-1].lower()
+
+
 # Moves everything from all sub-dirs into root
 def move_from_folders(root_dir, banned_dirs):
     exists = []
     seen = set()
     root_dirs = [x for x in os.listdir(root_dir) if x not in banned_dirs]
+
     for File in root_dirs:
         if not os.path.isdir(os.path.join(root_dir, File)):
             exists.append(File)
@@ -68,10 +73,13 @@ def main():
         season = ''                         # Season of episode
         episode = ''                        # Number of episode
 
+        sorted_files = 0
+        removed_files = 0
+
         for filename in os.listdir(root_path):
             abs_path = root_path + '/' + filename
             if not os.path.isdir(abs_path):
-                if os.path.splitext(abs_path)[-1].lower() in file_extensions:
+                if sp(abs_path) in file_extensions:
                     movie_info = guessit.guessit(filename)
 
                     # Collect file information
@@ -88,70 +96,63 @@ def main():
                     # If we find an episode with a title and season number
                     # it is added to the correct folder according to season number
                     if title != '' and season != '' and filetype == 'episode':
-                        if not os.path.exists(ef):
-                            os.makedirs(ef)
-                        if not os.path.exists(ef + '/' + title.title()):
-                            os.makedirs(ef + '/' + title.title())
                         if not os.path.exists(ef + '/' + title.title() + '/' + 'Season ' + season):
                             os.makedirs(ef + '/' + title.title() + '/' + 'Season ' + season)
                         shutil.move(abs_path, ef + '/' + title.title() + '/' + 'Season ' + season)
-
                         title, filename, season = '', '', ''
+                        sorted_files += 1
 
                     # If we find an episode with a title, an episode number but not a season
                     # number, it is added to the root folder of the correct Tv show
                     elif title != '' and season == '' and episode != '' and filetype == 'episode':
-                        if not os.path.exists(ef):
-                            os.makedirs(ef)
                         if not os.path.exists(ef + '/' + title.title()):
                             os.makedirs(ef + '/' + title.title())
                         shutil.move(abs_path, ef + '/' + title.title())
-
                         title, filename, season = '', '', ''
+                        sorted_files += 1
 
                     # If the file type has a title and is a movie
                     # it is added to theMovies folder
                     elif title != '' and filetype == 'movie':
-                        if not os.path.exists(mf):
-                            os.makedirs(mf)
                         if not os.path.exists(mf + '/' + title.title()):
                             os.makedirs(mf + '/' + title.title())
-                            shutil.move(abs_path, mf + '/' + title.title())
-                        else:
-                            shutil.move(abs_path, mf + '/' + title.title())
-
+                        shutil.move(abs_path, mf + '/' + title.title())
                         title, filename, season = '', '', ''
+                        sorted_files += 1
 
                 # Here we sort out any zipped files. They are added to
                 # the Zipped folder and grouped into their own folder
                 elif re.search(".r\d+|rar|part", filename):
                     mi = guessit.guessit(filename)
-                    if not os.path.exists(zf):
-                        os.makedirs(zf)
                     for key, val in mi.items():
                         if key == 'title':
-                            file_name = str(val)
-                            fpath = zf + '/' + file_name.split()[0]
-                            move_me(abs_path, fpath, filename)
+                            move_me(abs_path, zf + '/' + str(val).split()[0], filename)
+                            sorted_files += 1
                             break
 
                 # In this block of code, we sort out all other file extensions
                 # that need to be taken care of. They are either removed or
                 # Moved into their own folder
-                elif os.path.splitext(abs_path)[-1].lower() in banned_extensions:
+                elif sp(abs_path) in banned_extensions:
                     os.remove(abs_path)
-                elif os.path.splitext(abs_path)[-1].lower() in music_extensions:
+                    removed_files += 1
+                elif sp(abs_path) in music_extensions:
                     move_me(abs_path, sf, filename)
-                elif os.path.splitext(abs_path)[-1].lower() == '.exe':
+                    sorted_files += 1
+                elif sp(abs_path) == '.exe':
                     move_me(abs_path, pf, filename)
-                elif os.path.splitext(abs_path)[-1].lower() == '.txt':
+                    sorted_files += 1
+                elif sp(abs_path) == '.txt':
                     move_me(abs_path, df, filename)
+                    sorted_files += 1
+
         for file in os.listdir(root_path):
             abs_path = root_path + '/' + file
             if not os.path.isdir(abs_path):
                 move_me(abs_path, rf, file)
+                sorted_files += 1
 
-        print('Sorting complete!')
+        print('Sorting complete!\n\nSorted ' + str(sorted_files) + ' files')
 
 if __name__ == '__main__':
     main()
