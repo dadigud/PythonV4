@@ -21,7 +21,7 @@ py -m pip install guessit
 
 ## Running the script
 ```bash
-clean.py [-h] [-s] [-allowed, -a] [-banned, -b] root destination
+py clean.py [-h] [-s] [-allowed, -a] [-banned, -b] root destination
 ```
 ```bash
 positional arguments:
