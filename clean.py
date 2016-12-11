@@ -56,7 +56,6 @@ def main():
     #if uinput.user_input() == 1:
 def mainsort(root_path, targ_path):
     # Source path
-    print(root_path)
     if not os.path.exists(root_path):
         sys.exit('Source path does not exist...')
 
