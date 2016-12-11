@@ -4,7 +4,7 @@ This script is designed to categories a downlaod folder by moving the files to t
 
 ## Authors
 * Alex Kári Ívarsson, alexi15@ru.is
-* Daði Guðvarsson, dadi15@ru.is
+* Daði Guðvarðarson, dadi15@ru.is
 * Jón Heiðar Sigmundsson, jonhei15@ru.is
 
 ## Modules
@@ -21,7 +21,7 @@ py -m pip install guessit
 
 ## Running the script
 ```bash
-clean.py [-h] [-s] [-allowed, -a] [-banned, -b] root destination
+py clean.py [-h] [-s] [-allowed, -a] [-banned, -b] root destination
 ```
 ```bash
 positional arguments:
