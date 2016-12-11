@@ -22,12 +22,13 @@ def a_or_r_extension(ml, l_num):
             ml[l_num].remove(fe)
 
 
-def user_input():
+def user_input(sel):
     my_list = get_from_db()
     var = ''
 
     while var not in ['1', '2', '3']:
-        var = input('[1] Clean downloads folder\n[2] Add or remove allowed movie file extensions\n[3] Add or remove banned file extensions? (files will be deleted)\n-->')
+        # var = input('[1] Clean downloads folder\n[2] Add or remove allowed movie file extensions\n[3] Add or remove banned file extensions? (files will be deleted)\n-->')
+        var = sel
         if var not in ['1', '2', '3']:
             print('Wrong input')
         if var == '1':
