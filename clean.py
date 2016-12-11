@@ -173,7 +173,8 @@ def addremoveallowed():
 def addremovebanned():
     uinput.user_input('3')
 
-parser = argparse.ArgumentParser(description='Process some integers.')
+parser = argparse.ArgumentParser(description='Categories a folder of episodes and movies to their '
+                                             'appropriate directory.')
 parser.add_argument('root', metavar='root',
                    help='Folder to be sorted')
 parser.add_argument('dest', metavar='destination',
@@ -182,16 +183,16 @@ parser.add_argument('-s', dest='accumulate', action='store_const',
                    const=mainsort, default=mainsort,
                    help='Sort and move files in root to destination')
 
-parser.add_argument('-allowed', dest='accumulate', action='store_const',
+parser.add_argument('-allowed, -a', dest='accumulate', action='store_const',
                    const=addremoveallowed, default=mainsort,
                    help='Add or remove allowed movie file extensions')
 
-parser.add_argument('-banned', dest='accumulate', action='store_const',
+parser.add_argument('-banned, -b', dest='accumulate', action='store_const',
                    const=addremovebanned, default=mainsort,
                    help='Add or remove banned movie file extensions')
 
 args = parser.parse_args()
-print(args.accumulate())
+args.accumulate()
 
 # if __name__ == '__main__':
 #     main()
