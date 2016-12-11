@@ -54,12 +54,13 @@ def main():
 
 
     #if uinput.user_input() == 1:
-def mainsort():
-    root_path = sys.argv[1]  # Source path
+def mainsort(root_path, targ_path):
+    # Source path
+    print(root_path)
     if not os.path.exists(root_path):
         sys.exit('Source path does not exist...')
 
-    targ_path = sys.argv[2]  # Destination path
+    # Destination path
     if not os.path.exists(targ_path):
         os.makedirs(targ_path)
 
@@ -192,7 +193,7 @@ parser.add_argument('-banned, -b', dest='accumulate', action='store_const',
                    help='Add or remove banned movie file extensions')
 
 args = parser.parse_args()
-args.accumulate()
+args.accumulate(args.root, args.dest)
 
 # if __name__ == '__main__':
 #     main()
