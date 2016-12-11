@@ -168,10 +168,10 @@ def mainsort(root_path, targ_path):
 
     print('Sorting complete!\n\nSorted ' + str(sorted_files) + ' files')
 
-def addremoveallowed():
+def addremoveallowed(root, dest):
     uinput.user_input('2')
 
-def addremovebanned():
+def addremovebanned(root, dest):
     uinput.user_input('3')
 
 parser = argparse.ArgumentParser(description='Categories a folder of episodes and movies to their '
