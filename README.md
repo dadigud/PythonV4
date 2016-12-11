@@ -1,6 +1,6 @@
 # Download clean-Up
 
-This script is designed to categories a downlaod folder by moving the files to their appropriate directory. 
+This script is designed to categorize a download folder by moving the files to their appropriate directory. 
 
 ## Authors
 * Alex Kári Ívarsson, alexi15@ru.is

@@ -1,0 +1,6 @@
+{
+  "name": "Pythonv4",
+  "tagline": "Download clean-Up",
+  "body": "# Download clean-Up\r\n\r\nThis script is designed to categorize a download folder by moving the files to their appropriate directory. \r\n\r\n## Authors\r\n* Alex Kári Ívarsson, alexi15@ru.is\r\n* Daði Guðvarðarson, dadi15@ru.is\r\n* Jón Heiðar Sigmundsson, jonhei15@ru.is\r\n\r\n## Modules\r\nThe following modules are needed to run the script:\r\n* guessit\r\n* pathlib_revised\r\n\r\nTo install the required modules, run the following commands\r\n```bash \r\nFor windows\r\npy -m pip install pathlib_revised\r\npy -m pip install guessit\r\n```\r\n\r\n## Running the script\r\n```bash\r\npy clean.py [-h] [-s] [-allowed, -a] [-banned, -b] root destination\r\n```\r\n```bash\r\npositional arguments:\r\n  root          Folder to be sorted\r\n  destination   Destination folder of sort\r\n\r\noptional arguments:\r\n  -h, --help    show this help message and exit\r\n  -s            Sort and move files in root to destination\r\n  -allowed, -a  Add or remove allowed movie file extensions\r\n  -banned, -b   Add or remove banned movie file extensions\r\n```\r\n\r\n",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
